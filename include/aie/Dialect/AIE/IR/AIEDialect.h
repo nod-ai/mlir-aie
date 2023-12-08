@@ -26,6 +26,7 @@
 #include "mlir/IR/OpDefinition.h"
 #include "mlir/IR/OpImplementation.h"
 #include "mlir/IR/Types.h"
+#include "llvm/ADT/StringRef.h"
 
 namespace xilinx::AIE {
 
@@ -75,6 +76,7 @@ class AIEObjectFifoType
 public:
   /// Inherit some necessary constructors from 'TypeBase'.
   using Base::Base;
+  static constexpr llvm::StringLiteral name = "aie.object_fifo";
 
   /// Create an instance of a `ObjectFifoType` with the given element type.
   static AIEObjectFifoType get(mlir::MemRefType elementType);
@@ -99,6 +101,7 @@ class AIEObjectFifoSubviewType
 public:
   /// Inherit some necessary constructors from 'TypeBase'.
   using Base::Base;
+  static constexpr llvm::StringLiteral name = "aie.object_fifo_subview";
 
   /// Create an instance of a `SubviewType` with the given element type.
   static AIEObjectFifoSubviewType get(mlir::MemRefType elementType);
