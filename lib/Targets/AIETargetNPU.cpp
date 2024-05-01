@@ -21,6 +21,7 @@
 #include "llvm/Support/Format.h"
 
 #include <vector>
+#include <fstream>
 
 using namespace mlir;
 using namespace xilinx;
@@ -29,12 +30,12 @@ using namespace xilinx::AIEX;
 
 namespace {
 
-std::vector<uint32_t> getProlog() {
+/*std::vector<uint32_t> getProlog() {
   return {0x00000011, 0x01000405, 0x01000100, 0x0B590100, 0x000055FF,
           0x00000001, 0x00000010, 0x314E5A5F, 0x635F5F31, 0x676E696C,
           0x39354E5F, 0x6E693131, 0x5F727473, 0x64726F77, 0x00004573,
           0x07BD9630, 0x000055FF};
-}
+}*/
 
 // Example:
 // - instructions = {3,4,5}
@@ -133,7 +134,7 @@ void appendWriteBdShimTile(std::vector<uint32_t> &instructions,
 
 std::vector<uint32_t> xilinx::AIE::AIETranslateToNPU(ModuleOp module) {
 
-  std::vector<uint32_t> instructions = getProlog();
+  std::vector<uint32_t> instructions; // = getProlog();
 
   DeviceOp deviceOp = *module.getOps<DeviceOp>().begin();
   auto funcOps = deviceOp.getOps<func::FuncOp>();
@@ -156,7 +157,14 @@ std::vector<uint32_t> xilinx::AIE::AIETranslateToNPU(ModuleOp module) {
 LogicalResult xilinx::AIE::AIETranslateToNPU(ModuleOp module,
                                              raw_ostream &output) {
   auto instructions = AIETranslateToNPU(module);
-  for (auto w : instructions)
+  std::ofstream out2("test2.bin", std::ios_base::binary);
+  for (auto w : instructions){
+    out2 << w;
     output << llvm::format("%08X\n", w);
+  }
+  std::ofstream out("test3.bin", std::ios_base::binary);
+  uint64_t size = instructions.size();
+  //out.write(reinterpret_cast<char*>(&size), sizeof(size));
+  out.write(reinterpret_cast<char*>(instructions.data()), size * sizeof(uint32_t));
   return success();
 }
