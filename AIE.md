@@ -226,7 +226,8 @@ Traits: `HasParent<SwitchboxOp, ShimMuxOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>source_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 <tr><td><code>dest_bundle</code></td><td>xilinx::AIE::WireBundleAttr</td><td><details><summary>Bundle of wires</summary>{{% markdown %}}Enum cases:
 * Core (`Core`)
@@ -238,7 +239,8 @@ Traits: `HasParent<SwitchboxOp, ShimMuxOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -371,7 +373,11 @@ Interfaces: `AIETarget`
 * xcvc1902 (`xcvc1902`)
 * xcve2302 (`xcve2302`)
 * xcve2802 (`xcve2802`)
-* npu (`npu`){{% /markdown %}}</details></td></tr>
+* npu1 (`npu1`)
+* npu1_1col (`npu1_1col`)
+* npu1_2col (`npu1_2col`)
+* npu1_3col (`npu1_3col`)
+* npu1_4col (`npu1_4col`){{% /markdown %}}</details></td></tr>
 </table>
 
 
@@ -756,7 +762,8 @@ Example:
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>source_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 <tr><td><code>dest_bundle</code></td><td>xilinx::AIE::WireBundleAttr</td><td><details><summary>Bundle of wires</summary>{{% markdown %}}Enum cases:
 * Core (`Core`)
@@ -768,7 +775,8 @@ Example:
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -939,7 +947,8 @@ Interfaces: `InferTypeOpInterface`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -1515,7 +1524,8 @@ Traits: `HasParent<PacketFlowOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -1595,7 +1605,8 @@ Traits: `SingleBlockImplicitTerminator<EndOp>`, `SingleBlock`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>source_channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -1632,7 +1643,8 @@ Traits: `HasParent<PacketFlowOp>`
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>channel</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute whose minimum value is 0</td></tr>
 </table>
 
@@ -2101,7 +2113,8 @@ represented by an [aie.tile](#aietile-aietileop) operation.
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 <tr><td><code>dest_bundle</code></td><td>xilinx::AIE::WireBundleAttr</td><td><details><summary>Bundle of wires</summary>{{% markdown %}}Enum cases:
 * Core (`Core`)
 * DMA (`DMA`)
@@ -2112,7 +2125,8 @@ represented by an [aie.tile](#aietile-aietileop) operation.
 * East (`East`)
 * PLIO (`PLIO`)
 * NOC (`NOC`)
-* Trace (`Trace`){{% /markdown %}}</details></td></tr>
+* Trace (`Trace`)
+* Ctrl (`Ctrl`){{% /markdown %}}</details></td></tr>
 </table>
 
 #### Operands:
