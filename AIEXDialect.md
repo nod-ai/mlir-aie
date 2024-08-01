@@ -479,6 +479,42 @@ address patch operator
 </table>
 
 
+### `aiex.npu.blockwrite` (::xilinx::AIEX::NpuBlockWriteOp)
+
+_Blockwrite operator_
+
+
+Syntax:
+
+```
+operation ::= `aiex.npu.blockwrite` `(` $data `)` attr-dict `:` type($data)
+```
+
+blockwrite operator writes the data from the memref 'data' to the AIE array.
+If 'buffer' is present then 'address' is interpreted as an offset into the
+aie.buffer with symbol name 'buffer'.
+If 'column' and 'row' are present then 'address' is interpreted as an offset
+into the memory space of aie.tile(column, row).
+If 'buffer' is not present and 'column' and 'row' are not present then
+'address' is interpreted as a full 32-bit address in the AIE array.
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>address</code></td><td>::mlir::IntegerAttr</td><td>32-bit unsigned integer attribute</td></tr>
+<tr><td><code>buffer</code></td><td>::mlir::FlatSymbolRefAttr</td><td>flat symbol reference attribute</td></tr>
+<tr><td><code>column</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+<tr><td><code>row</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
+</table>
+
+#### Operands:
+
+| Operand | Description |
+| :-----: | ----------- |
+| `data` | memref of any type values
+
+
 ### `aiex.npu.dma_memcpy_nd` (::xilinx::AIEX::NpuDmaMemcpyNdOp)
 
 _Half DMA operator_
@@ -657,7 +693,7 @@ _Rtp write operator_
 Syntax:
 
 ```
-operation ::= `aiex.npu.rtp_write` `(` $col `,` $row `,` $index `,` $value `)` attr-dict
+operation ::= `aiex.npu.rtp_write` `(` $buffer `,` $index `,` $value `)` attr-dict
 ```
 
 rtp write operator
@@ -666,9 +702,7 @@ rtp write operator
 
 <table>
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
-<tr><td><code>buffer_sym_name</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
-<tr><td><code>col</code></td><td>::mlir::IntegerAttr</td><td>32-bit unsigned integer attribute</td></tr>
-<tr><td><code>row</code></td><td>::mlir::IntegerAttr</td><td>32-bit unsigned integer attribute</td></tr>
+<tr><td><code>buffer</code></td><td>::mlir::FlatSymbolRefAttr</td><td>flat symbol reference attribute</td></tr>
 <tr><td><code>index</code></td><td>::mlir::IntegerAttr</td><td>32-bit unsigned integer attribute</td></tr>
 <tr><td><code>value</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 </table>
@@ -716,7 +750,13 @@ Syntax:
 operation ::= `aiex.npu.write32` attr-dict
 ```
 
-write32 operator
+NPU write32 operator writes a 32bit value to the AIE array.
+If 'buffer' is present then 'address' is interpreted as an offset into the
+aie.buffer with symbol name 'buffer'.
+If 'column' and 'row' are present then 'address' is interpreted as an offset
+into the memory space of aie.tile(column, row).
+If 'buffer' is not present and 'column' and 'row' are not present then
+'address' is interpreted as a full 32-bit address in the AIE array.
 
 #### Attributes:
 
@@ -724,6 +764,7 @@ write32 operator
 <tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
 <tr><td><code>address</code></td><td>::mlir::IntegerAttr</td><td>32-bit unsigned integer attribute</td></tr>
 <tr><td><code>value</code></td><td>::mlir::IntegerAttr</td><td>32-bit unsigned integer attribute</td></tr>
+<tr><td><code>buffer</code></td><td>::mlir::FlatSymbolRefAttr</td><td>flat symbol reference attribute</td></tr>
 <tr><td><code>column</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 <tr><td><code>row</code></td><td>::mlir::IntegerAttr</td><td>32-bit signless integer attribute</td></tr>
 </table>
@@ -857,6 +898,26 @@ A route operation that routes one herd to another.
 | `destHerds` | index
 
 
+### `aiex.runtime_sequence` (::xilinx::AIEX::RuntimeSequenceOp)
+
+_Program the configuration co-processor of the AI Engine array_
+
+Instructions in this operation allow for runtime (re-)configuration of the AI Engine array, such as configuring data movement buffer descriptors.
+These instructions will execute on the configuration co-processor of the AI Engine array.
+
+Typically, these instructions include configuring the data transfers between host and AIE array on the shims.
+The input arguments are arguments passed in from the host at kernel invocation time. This may include buffers on the host.
+
+Traits: `HasParent<AIE::DeviceOp>`, `NoTerminator`
+
+#### Attributes:
+
+<table>
+<tr><th>Attribute</th><th>MLIR Type</th><th>Description</th></tr>
+<tr><td><code>sym_name</code></td><td>::mlir::StringAttr</td><td>string attribute</td></tr>
+</table>
+
+
 ### `aiex.select` (::xilinx::AIEX::SelectOp)
 
 _A select operation_
@@ -963,4 +1024,112 @@ Similar to UseLockOp, this operation can be understood as "blocking" op.
 * Release (`Release`){{% /markdown %}}</details></td></tr>
 </table>
 
+
+## Enums
+
+### AIEArch
+
+AIE Architecture
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| AIE1 | `1` | AIE1 |
+| AIE2 | `2` | AIE2 |
+
+### AIEDevice
+
+AIE Device
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| xcvc1902 | `1` | xcvc1902 |
+| xcve2302 | `2` | xcve2302 |
+| xcve2802 | `3` | xcve2802 |
+| npu1 | `4` | npu1 |
+| npu1_1col | `5` | npu1_1col |
+| npu1_2col | `6` | npu1_2col |
+| npu1_3col | `7` | npu1_3col |
+| npu1_4col | `8` | npu1_4col |
+
+### CascadeDir
+
+Directions for cascade
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| South | `3` | South |
+| West | `4` | West |
+| North | `5` | North |
+| East | `6` | East |
+
+### DMAChannelDir
+
+DMA Channel direction
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| S2MM | `0` | S2MM |
+| MM2S | `1` | MM2S |
+
+### LockAction
+
+lock acquire/release
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| Acquire | `0` | Acquire |
+| AcquireGreaterEqual | `2` | AcquireGreaterEqual |
+| Release | `1` | Release |
+
+### LockBlocking
+
+lock operation is blocking
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| NonBlocking | `0` | NonBlocking |
+| Blocking | `1` | Blocking |
+
+### ObjectFifoPort
+
+Ports of an object FIFO
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| Produce | `0` | Produce |
+| Consume | `1` | Consume |
+
+### WireBundle
+
+Bundle of wires
+
+#### Cases:
+
+| Symbol | Value | String |
+| :----: | :---: | ------ |
+| Core | `0` | Core |
+| DMA | `1` | DMA |
+| FIFO | `2` | FIFO |
+| South | `3` | South |
+| West | `4` | West |
+| North | `5` | North |
+| East | `6` | East |
+| PLIO | `7` | PLIO |
+| NOC | `8` | NOC |
+| Trace | `9` | Trace |
+| Ctrl | `10` | Ctrl |
 
